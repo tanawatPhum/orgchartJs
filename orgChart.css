@@ -181,7 +181,7 @@ body {
     text-align: center;
     background: transparent;
     height: 50%;
-    width: 100%;
+    width: 75%;
     position: absolute;
     border-bottom-right-radius: 50vh;
     border-bottom-left-radius: 50vh;
@@ -189,17 +189,19 @@ body {
 }
 
 .box-people-desc .name {
+    word-break: break-all;
     font-family: kanit-light;
     color: white;
     font-size: 0.3em;
-    line-height: 0.5;
+    line-height: 1.1;
     display: block;
 }
 
 .box-people-desc .job-position {
+    word-break: break-all;
     font-family: kanit-extralight;
     color: white;
-    font-size: 0.2em;
+    font-size: 0.05em;
     line-height: 1;
     display: block;
 }
