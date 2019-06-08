@@ -89,7 +89,7 @@ async function divideCircle(elementCircle) {
     centerObj.top = y0;
     centerObj.width = 1;
     centerObj.height = 1;
-    console.log("center x,y" + x0, y0);
+    // console.log("center x,y" + x0, y0);
     let items = peopleList[currentIndexCircle].totalPeople * 2;
     let r = $(elementCircle).outerWidth() / 2;
     for (let i = 0; i < items; i++) {
@@ -107,7 +107,7 @@ async function divideCircle(elementCircle) {
         cordObj.width = 1;
         cordObj.height = 1;
         cordObj.r = r;
-        console.log("x = " + x, "y = " + y);
+        // console.log("x = " + x, "y = " + y);
         cordinateArr.push(cordObj);
 
     }
@@ -189,9 +189,9 @@ async function drawLine() {
                     let x2 = (div2.offset().left + (div2.width() / 2) - $('.pinch-zoom-container').offset().left);
                     let y2 = (div2.offset().top + (div2.height() / 2) - $('.pinch-zoom-container').offset().top);
 
-                    console.log("element1", div2)
-                    console.log("createLineY", y2)
-                    console.log("createLineX", x2)
+                    // console.log("element1", div2)
+                    // console.log("createLineY", y2)
+                    // console.log("createLineX", x2)
                     let newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                     newLine.setAttribute('id', "#conection_" + people1.id + "_to_" + people2.id);
                     newLine.setAttribute('x1', x1);
@@ -213,14 +213,16 @@ async function drawLine() {
 async function drawPeople() {
     $(".container-circle").each((indexCircle, elementCircle) => {
         $(elementCircle).find(".box-people").each((indexBox1, elementBox1) => {
-
+            let profile = peopleList[indexCircle].peopleDetail[indexBox1];
+            profile = profile && profile.hasOwnProperty('profile') && profile.profile;
+            console.log("Profile => ", profile)
             let div1 = $(elementBox1);
             let xI1 = (div1.offset().left - $('.pinch-zoom-container').offset().left);
             let yI1 = (div1.offset().top - $('.pinch-zoom-container').offset().top);
 
-            console.log("element2", div1)
-            console.log("createLineYI1", yI1)
-            console.log("createLineXI1", xI1)
+            // console.log("element2", div1)
+            // console.log("createLineYI1", yI1)
+            // console.log("createLineXI1", xI1)
             let foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
 
             if (div1.hasClass("initial-box-people")) {
@@ -239,11 +241,11 @@ async function drawPeople() {
             let boxPeople = document.createElement('div');
             boxPeople.classList.add("box-people-interface");
             let imgPeople = document.createElement('img');
-            imgPeople.src = "assets/imgs/imgPeople.png";
+            imgPeople.src = profile['img'] || "assets/imgs/imgPeople.png";
 
             boxPeople.append(imgPeople);
             let boxIcon = document.createElement('div');
-            boxIcon.className = "box-people-desc";
+            boxIcon.className = "box-people-icon";
             if ($(elementCircle).hasClass("initial-circle")) {
                 boxPeople.classList.add("initial-box-circle")
                 foreignObject.setAttributeNS(null, 'y', yI1);
@@ -255,29 +257,22 @@ async function drawPeople() {
                 boxPeople.classList.add("even-box-circle")
                 boxIcon.classList.add("even-icon-circle")
             }
+            let boxDesc = document.createElement('div');
+            boxDesc.className = "box-people-desc";
+            let fullname = document.createElement('span');
+            fullname.className = "name";
+            fullname.innerHTML = profile.fullName;
+            boxDesc.append(fullname);
 
-
-
+            let position = document.createElement('span');
+            position.className = "job-position";
+            position.innerHTML = profile.jobPosition;
+            boxDesc.append(position);
+            // boxDesc.textContent = profile.fullName;
             boxPeople.append(boxIcon);
-
-
-            // div.style.width = "100%"
-            // div.style.height = "100%"
-            // div.style.background = "blue";
+            boxPeople.append(boxDesc);
             foreignObject.appendChild(boxPeople);
-            // newImage.setAttributeNS(null, 'visibility', 'visible');
             $("#orgChart").find("#svg").append(foreignObject);
-
-
-
-            // let newImage = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-            // newImage.setAttributeNS(null, 'height', '57');
-            // newImage.setAttributeNS(null, 'width', '57');
-            // newImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/imgs/test.png');
-            // newImage.setAttributeNS(null, 'x', xI1);
-            // newImage.setAttributeNS(null, 'y', yI1);
-            // newImage.setAttributeNS(null, 'visibility', 'visible');
-            // $("#orgChart").find("#svg").append(newImage);
         });
     });
 }
@@ -314,6 +309,11 @@ async function getTotalPeople() {
             peopleDetail: [{
                 id: "box_0",
                 position: "A",
+                profile: {
+                    img: 'https://img.icons8.com/color/420/person-male.png',
+                    fullName: 'test',
+                    jobPosition: 'positiontest'
+                },
                 childPeople: [
                     { id: "box_1", lineType: "RT" },
                     { id: "box_2", lineType: "RT" },
@@ -325,6 +325,11 @@ async function getTotalPeople() {
             peopleDetail: [{
                     id: "box_1",
                     position: "D",
+                    profile: {
+                        img: 'https://img.icons8.com/color/420/person-male.png',
+                        fullName: 'nametest',
+                        jobPosition: 'positiontest'
+                    },
                     childPeople: [
                         { id: "box_3", lineType: "RT" },
                         { id: "box_4", lineType: "RT" },
@@ -333,6 +338,11 @@ async function getTotalPeople() {
                 {
                     id: "box_2",
                     position: "A",
+                    profile: {
+                        img: 'https://img.icons8.com/color/420/person-male.png',
+                        fullName: 'nametest',
+                        jobPosition: 'positiontest'
+                    },
                     childPeople: [
                         { id: "box_5", lineType: "RT" },
                         { id: "box_6", lineType: "RT" },
@@ -345,6 +355,11 @@ async function getTotalPeople() {
             peopleDetail: [{
                     id: "box_3",
                     position: "D",
+                    profile: {
+                        img: 'https://img.icons8.com/color/420/person-male.png',
+                        fullName: 'nametest',
+                        jobPosition: 'positiontest'
+                    },
                     childPeople: [
 
                     ]
@@ -352,6 +367,11 @@ async function getTotalPeople() {
                 {
                     id: "box_4",
                     position: "D",
+                    profile: {
+                        img: 'https://img.icons8.com/color/420/person-male.png',
+                        fullName: 'nametest',
+                        jobPosition: 'positiontest'
+                    },
                     childPeople: [
 
                     ]
@@ -359,6 +379,11 @@ async function getTotalPeople() {
                 {
                     id: "box_5",
                     position: "D",
+                    profile: {
+                        img: 'https://img.icons8.com/color/420/person-male.png',
+                        fullName: 'nametest',
+                        jobPosition: 'positiontest'
+                    },
                     childPeople: [
 
                     ]
@@ -366,6 +391,11 @@ async function getTotalPeople() {
                 {
                     id: "box_6",
                     position: "D",
+                    profile: {
+                        img: 'https://img.icons8.com/color/420/person-male.png',
+                        fullName: 'nametest',
+                        jobPosition: 'positiontest'
+                    },
                     childPeople: [
 
                     ]
